@@ -1,0 +1,17 @@
+<head>
+	<title>Twitter Feed</title>
+</head>
+
+<body>{{> tweets}}</body>
+
+<template name="tweets">
+	<h1>Tweets</h1>
+	<ul class="tweets">
+		{{#each latestTweet}}
+		<li>
+			<span class="date">{{date}}</span>
+			<span class="tweet">{{{text}}}</span>
+		</li>
+		{{/each}}
+	</ul>
+</template>
