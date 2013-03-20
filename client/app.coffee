@@ -56,6 +56,23 @@ timeAgo = (dateString) ->
 Generate links to #Hash and @User
 ###
 linkTweet = ( msg ) ->
-  if msg
-    msg = msg.replace /(\#([^ ]+))+/g, '<a href="http://twitter.com/search?q=%23$2">$1</a>'
-    msg.replace /(\@([^ ]+))+/g, '<a href="http://twitter.com/$2">$1</a>'
+  #Links
+  links_pattern = /(^|\s)((https?:\/\/)?[\w-]+(\.[\w-]+)+\.?(:\d+)?(\/\S*)?)/gi
+  links = msg.match links_pattern
+  if links != null
+    for link in links
+
+      #trim link
+      link = link.replace /^\s+|\s+$/g, ""
+
+      #Add url prefix
+      prefix = ''
+      if ! link.match /(http|https|file|ftp):\/\//g
+        prefix = 'http://'
+      msg = msg.replace link, '<a href="' + prefix + link + '" target="_blank" rel="nofollow">' + link + '</a>'
+
+  #Hash tag
+  msg = msg.replace /\s?(\#([^ ]+)+)\s?/g, ' <a href="http://twitter.com/search?q=%23$2" target="_blank">$1</a> '
+
+  #User tag
+  msg.replace /\s?(\@([^ ]+)+)\s?/g, ' <a href="http://twitter.com/$2" target="_blank">$1</a> '
